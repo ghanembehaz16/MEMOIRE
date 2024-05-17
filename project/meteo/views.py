@@ -18,20 +18,19 @@ from .serializers import ReactSerializer
 from rest_framework import status
 from rest_framework.parsers import JSONParser
 from django.http.response import JsonResponse
+from rest_framework.views import APIView #add by BEHAZ Ghanem
 
-class ReactViewSet(viewsets.ModelViewSet):
-    queryset = React.objects.all()
-    serializer_class = ReactSerializer
+from rest_framework.response import Response #add by BEHAZ Ghanem
+
+from rest_framework import status #add by BEHAZ Ghanem
+
+#class ReactViewSet(viewsets.ModelViewSet):
+#    queryset = React.objects.all()
+#    serializer_class = ReactSerializer
 
 class ReactView(APIView):
     def get(self, request):
-        output= [{"Lieu":output.Lieu,
-            "Date":output.Date,
-            "temp":output.Temp,
-            "vent":output.vent,
-            "precepitation":output.precepitation,
-            "humidite":output.humidite}
-            for output in React.objects.all()]
+        output= React.objects.all().values('Lieu','Date','temp','vent','precepitation','humidite')
         return Response(output)
     
     def post(self, request):
